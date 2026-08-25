@@ -62,23 +62,30 @@ if hero_path.exists():
         .hero-title {{
             font-size: 46px;
             font-weight: 800;
-            color: white;
+            color: #D4AF37 !important;
             margin: 0;
         }}
 
         .hero-subtitle {{
             font-size: 18px;
-            color: #d6dbe3;
+            color: #D4AF37 !important;
+            margin-top: 8px;
+        }}
+
+        .hero-subtitle-2 {{
+            font-size: 18px;
+            color: #D4AF37 !important;
             margin-top: 8px;
         }}
         </style>
 
         <div class="hero-section">
             <div>
-                <div class="hero-title">FraudGuard AI</div>
+                <div class="hero-title">BANQUE MISR MODEL</div>
                 <div class="hero-subtitle">
-                    AI-Powered Fraud Detection & Risk Intelligence
-                </div>
+                    RISK DETECTOR AI MODEL
+                <div class="hero-subtitle">
+                    AI MODEL TO PREDICT IF THE CUSTOMER MISUSE OR NOT
             </div>
         </div>
         """,
