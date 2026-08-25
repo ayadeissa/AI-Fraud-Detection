@@ -42,10 +42,6 @@ if hero_path.exists():
         <style>
         .hero-section {{
             background-image:
-                linear-gradient(
-                    rgba(3, 12, 25, 0.55),
-                    rgba(3, 12, 25, 0.88)
-                ),
                 url("data:image/png;base64,{hero_base64}");
 
             background-size: cover;
