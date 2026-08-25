@@ -1,9 +1,14 @@
-
+from pathlib import Path
+import base64
 from pathlib import Path
 import joblib
 import numpy as np
 import pandas as pd
 import streamlit as st
+
+def get_image_base64(image_path):
+    with open(image_path, "rb") as f:
+        return base64.b64encode(f.read()).decode()
 
 st.set_page_config(
     page_title="FraudGuard AI",
