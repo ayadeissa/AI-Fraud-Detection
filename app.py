@@ -70,8 +70,10 @@ if hero_path.exists():
             <div>
                 <div class="hero-title">BANQUE MISR MODEL</div>
                 
-        </div>
-        </div>
+                <div class="hero-subtitle">
+                RISK DETECTOR AI MODEL
+                <div class="hero-subtitle">
+                AI MODEL TO PREDICT IF THE CUSTOMER MISUSE OR NOT
         """,
         unsafe_allow_html=True
     )
