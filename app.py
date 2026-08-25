@@ -48,13 +48,15 @@ if hero_path.exists():
                 ),
                 url("data:image/png;base64,{hero_base64}");
 
-            background-size: contain;
+            background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
             min-height: 430px;
             border-radius: 24px;
             padding: 45px;
             display: flex;
+            filter: none !important;
+            opacity: 1 !important;
             align-items: flex-end;
             margin-bottom: 25px;
             border: 1px solid rgba(255, 193, 7, 0.25);
