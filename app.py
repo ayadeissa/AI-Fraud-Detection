@@ -59,19 +59,19 @@ if hero_path.exists():
         .hero-title {{
             font-size: 46px;
             font-weight: 800;
-            color: #D4AF37 !important;
+            color: #8D1930 !important;
             margin: 0;
         }}
 
         .hero-subtitle {{
             font-size: 18px;
-            color: #D4AF37 !important;
+            color: #8D1930 !important;
             margin-top: 8px;
         }}
 
         .hero-subtitle-2 {{
             font-size: 18px;
-            color: #D4AF37 !important;
+            color: #8D1930 !important;
             margin-top: 8px;
         }}
         </style>
