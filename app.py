@@ -463,9 +463,11 @@ with tabs[3]:
             fig.update_layout(title="ROC Curve", xaxis_title="False Positive Rate", yaxis_title="True Positive Rate")
             st.plotly_chart(fig, use_container_width=True)
 
-            if best_params:
-                st.markdown("### 🔧 Tuned Hyperparameters")
-                st.json({"Best Parameters": best_params, "CV Accuracy": best_score})
+            if "best_params" in locals() and best_params:
+               st.markdown("### 🔧 Tuned Hyperparameters")
+               st.json({"Best Parameters": best_params,
+                        "CV Accuracy": best_score
+               })
 
             # Feature importance / coefficients
             model = r["model"]
