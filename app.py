@@ -156,18 +156,6 @@ def load_artifact():
         return None
     return joblib.load(MODEL_PATH)
 
-st.markdown("""
-<style>
-.block-container {max-width: 1350px; padding-top: 2rem;}
-.hero {padding: 28px; border-radius: 22px; background: linear-gradient(135deg,#0f172a,#172554);
-        border:1px solid #334155; margin-bottom:20px;}
-.card {padding:18px; border-radius:18px; background:#0f172a; border:1px solid #334155;}
-</style>
-<div class="hero">
-<h1>🛡️ FraudGuard AI</h1>
-<p>Integrated ML Model + Streamlit Investigation Dashboard</p>
-</div>
-""", unsafe_allow_html=True)
 
 artifact = load_artifact()
 
