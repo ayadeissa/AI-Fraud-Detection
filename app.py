@@ -47,7 +47,7 @@ if hero_path.exists():
             background-size: contain;
             background-position: center;
             background-repeat: no-repeat;
-            min-height: 800px;
+            min-height: 850px;
             border-radius: 24px;
             padding: 45px;
             display: flex;
