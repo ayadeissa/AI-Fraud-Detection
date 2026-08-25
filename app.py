@@ -32,7 +32,7 @@ CATEGORICAL_COLS = [
 MODEL_COLS = NUMERICAL_COLS + CATEGORICAL_COLS + ["mcc_mismatch_flag"]
 TARGET = "is_flagged_misuse"
 
-hero_path = Path(__file__).parent / "assets"  
+hero_path = Path(__file__).parent / "assets"  / "hero.png"
 
 if hero_path.exists():
     hero_base64 = get_image_base64(hero_path)
