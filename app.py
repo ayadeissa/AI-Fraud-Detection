@@ -32,6 +32,61 @@ CATEGORICAL_COLS = [
 MODEL_COLS = NUMERICAL_COLS + CATEGORICAL_COLS + ["mcc_mismatch_flag"]
 TARGET = "is_flagged_misuse"
 
+hero_path = Path(__file__).parent / "assets" / "hero.png"
+
+if hero_path.exists():
+    hero_base64 = get_image_base64(hero_path)
+
+    st.markdown(
+        f"""
+        <style>
+        .hero-section {{
+            background-image:
+                linear-gradient(
+                    rgba(3, 12, 25, 0.55),
+                    rgba(3, 12, 25, 0.88)
+                ),
+                url("data:image/png;base64,{hero_base64}");
+
+            background-size: cover;
+            background-position: center;
+            min-height: 430px;
+            border-radius: 24px;
+            padding: 45px;
+            display: flex;
+            align-items: flex-end;
+            margin-bottom: 25px;
+            border: 1px solid rgba(255, 193, 7, 0.25);
+        }}
+
+        .hero-title {{
+            font-size: 46px;
+            font-weight: 800;
+            color: white;
+            margin: 0;
+        }}
+
+        .hero-subtitle {{
+            font-size: 18px;
+            color: #d6dbe3;
+            margin-top: 8px;
+        }}
+        </style>
+
+        <div class="hero-section">
+            <div>
+                <div class="hero-title">FraudGuard AI</div>
+                <div class="hero-subtitle">
+                    AI-Powered Fraud Detection & Risk Intelligence
+                </div>
+            </div>
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
+else:
+    st.warning("Hero image not found: assets/hero.png")
+
 PURPOSES = [
     "Medical", "Equipment Purchase", "Education",
     "Business Expansion", "Debt Consolidation"
