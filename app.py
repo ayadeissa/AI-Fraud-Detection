@@ -78,7 +78,6 @@ if hero_path.exists():
 
     st.markdown(f"""
         <style>
-        .hero-section {{
             background-size :fill
         <div class="card">
         <h1>RISK DETECTOR AI MODEL</h1>
