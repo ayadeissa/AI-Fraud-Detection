@@ -44,10 +44,10 @@ if hero_path.exists():
             background-image:
                 url("data:image/png;base64,{hero_base64}");
 
-            background-size: contain;
+            background-size: 100%;
             background-position: center;
             background-repeat: no-repeat;
-            min-height: 700px;
+            min-height: 800px;
             border-radius: 25px;
             padding: 45px;
             display: flex;
