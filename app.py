@@ -79,9 +79,10 @@ if hero_path.exists():
     st.markdown(f"""
         <style>
         .hero-section {{
-            background-color: #131313 !important;
+            background-image:
+                url("data:image/png;base64,{hero_base64}");
 
-            background-size: 100%;
+            background-size: fill;
             background-position: center;
             background-repeat: no-repeat;
             min-height: 300px;
