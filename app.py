@@ -69,10 +69,7 @@ if hero_path.exists():
         <div class="hero-section">
             <div>
                 <div class="hero-title">BANQUE MISR MODEL</div>
-                <div class="hero-subtitle">
-                    RISK DETECTOR AI MODEL
-                <div class="hero-subtitle">
-                    AI MODEL TO PREDICT IF THE CUSTOMER MISUSE OR NOT
+                
             </div>
         </div>
         """,
