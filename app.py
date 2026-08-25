@@ -60,6 +60,12 @@ if hero_path.exists():
             align-items: flex-end;
             margin-bottom: 25px;
             border: 1px solid rgba(255, 193, 7, 0.25);
+            background: linear-gradient(
+            90deg,
+            rgba(5, 15, 25, 0.25) 0%,
+            rgba(5, 15, 25, 0.05) 55%,
+            rgba(5, 15, 25, 0.00) 100%
+        );
         }}
 
         .hero-title {{
