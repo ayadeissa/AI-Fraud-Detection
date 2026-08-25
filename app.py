@@ -76,19 +76,7 @@ if hero_path.exists():
         """,
         unsafe_allow_html=True
     )
-    st.markdown( """
-        <div style="
-        background-color: #f9f9f9; 
-        padding: 15px; 
-        border-radius: 8px; 
-        border: 1px solid #e0e0e0;
-        margin-bottom: 20px;">
-        <h4 style="color: #333; margin-top: 0;">RISK DETECTOR AI MODEL</h4>
-        <p style="color: #666; margin-bottom: 0;">AI MODEL TO PREDICT IF THE CUSTOMER MISUSE OR NOT</p>
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
+    
 
 
 else:
