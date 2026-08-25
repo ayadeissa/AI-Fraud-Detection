@@ -211,7 +211,7 @@ with st.form("borrower_form"):
         avg_tx_amount = st.number_input("Average transaction", 0.0, value=2000.0)
         max_single_tx_pct = st.number_input("Max single transaction %", 0.0, 1.0, 0.50)
 
-    submitted = st.form_submit_button("🚨 Run Fraud Assessment", use_container_width=True)
+    submitted = st.form_submit_button("🚨 PREDICT ", use_container_width=True)
 
 if submitted:
     row = pd.DataFrame([{
