@@ -61,6 +61,7 @@ if hero_path.exists():
             font-weight: 800;
             color: #8D1930 !important;
             text-align: center;
+            margin-top: 35px;
             margin-bottom: 15px;
         }}
 
@@ -82,6 +83,7 @@ if hero_path.exists():
         padding: 15px; 
         border-radius: 8px; 
         border: 1px solid #e0e0e0;
+        margin-top: 35px;
         margin-bottom: 20px;">
         <h4 style="color: #333; margin-top: 0;">RISK DETECTOR AI MODEL</h4>
         <p style="color: #666; margin-bottom: 0;">AI MODEL TO PREDICT IF THE CUSTOMER MISUSE OR NOT</p>
