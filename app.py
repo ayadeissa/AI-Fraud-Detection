@@ -272,12 +272,4 @@ if submitted:
         st.progress(min(probability, 1.0))
         st.info(message)
 
-with st.expander("🧠 Model Details"):
-    st.json({
-        "Model": "RandomForestClassifier",
-        "Class Weight": "balanced",
-        "Best Parameters": metrics.get("best_params", {}),
-        "Features": artifact.get("feature_columns", MODEL_COLS),
-    })
 
-st.caption("Decision-support system. Model output should be combined with business rules and human investigation.")
