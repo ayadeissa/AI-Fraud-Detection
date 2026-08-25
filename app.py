@@ -63,17 +63,7 @@ if hero_path.exists():
             margin: 0;
         }}
 
-        .hero-subtitle {{
-            font-size: 18px;
-            color: #d6dbe3 !important;
-            margin-top: 8px;
-        }}
-
-        .hero-subtitle-2 {{
-            font-size: 18px;
-            color: #131313 !important;
-            margin-top: 8px;
-        }}
+        
         </style>
 
         <div class="hero-section">
