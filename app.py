@@ -76,7 +76,10 @@ if hero_path.exists():
         unsafe_allow_html=True
     )
 
-    st.markdown("""
+    st.markdown(f"""
+        <style>
+        .hero-section {{
+            background-size :fill
         <div class="card">
         <h1>RISK DETECTOR AI MODEL</h1>
         <p>AI MODEL TO PREDICT IF THE CUSTOMER MISUSE OR NOT</p>
