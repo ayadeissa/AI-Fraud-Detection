@@ -49,7 +49,7 @@ if hero_path.exists():
             background-repeat: no-repeat;
             min-height: 700px;
             border-radius: 50px;
-            overflow: hidden;
+            
             padding: 45px;
             display: flex;
             filter: none !important;
