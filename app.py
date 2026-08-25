@@ -77,6 +77,21 @@ if hero_path.exists():
     )
 
     st.markdown(f"""
+        <style>
+        .hero-section {{
+            background-color: #131313 !important;
+
+            background-size: 100%;
+            background-position: center;
+            background-repeat: no-repeat;
+            min-height: 800px;
+            border-radius: 24px;
+            padding: 45px;
+            display: flex;
+            filter: none !important;
+            opacity: 1 !important;
+            align-items: flex-end;
+        }}
         <div class="card">
         <h1>RISK DETECTOR AI MODEL</h1>
         <p>AI MODEL TO PREDICT IF THE CUSTOMER MISUSE OR NOT</p>
