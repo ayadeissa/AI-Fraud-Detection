@@ -44,7 +44,7 @@ if hero_path.exists():
             background-image:
                 url("data:image/png;base64,{hero_base64}");
 
-            background-size: cover;
+            background-size: 100%;
             background-position: center;
             background-repeat: no-repeat;
             min-height: 430px;
@@ -54,8 +54,6 @@ if hero_path.exists():
             filter: none !important;
             opacity: 1 !important;
             align-items: flex-end;
-            margin-bottom: 25px;
-            border: 1px solid rgba(255, 193, 7, 0.25);
         }}
 
         .hero-title {{
