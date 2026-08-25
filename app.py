@@ -79,7 +79,7 @@ if hero_path.exists():
     st.markdown( """
         <div style="
         background-color: #f9f9f9; 
-        padding: 150px; 
+        padding: 15px; 
         border-radius: 8px; 
         border: 1px solid #e0e0e0;
         margin-bottom: 20px;">
