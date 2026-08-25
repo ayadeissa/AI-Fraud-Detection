@@ -76,23 +76,7 @@ if hero_path.exists():
         unsafe_allow_html=True
     )
 
-    st.markdown(f"""
-        <style>
-        .hero-section {{
-            background-image:
-                url("data:image/png;base64,{hero_base64}");
-
-            background-size: fill;
-            background-position: center;
-            background-repeat: no-repeat;
-            min-height: 300px;
-            border-radius: 24px;
-            padding: 45px;
-            display: flex;
-            filter: none !important;
-            opacity: 1 !important;
-            align-items: flex-end;
-        }}
+    st.markdown("""
         <div class="card">
         <h1>RISK DETECTOR AI MODEL</h1>
         <p>AI MODEL TO PREDICT IF THE CUSTOMER MISUSE OR NOT</p>
