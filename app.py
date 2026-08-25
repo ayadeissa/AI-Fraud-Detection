@@ -69,7 +69,10 @@ if hero_path.exists():
         <div class="hero-section">
             <div>
                 <div class="hero-title">BANQUE MISR MODEL</div>
+        </div>
                 
+        </div>
+                 
                 
         """,
         unsafe_allow_html=True
