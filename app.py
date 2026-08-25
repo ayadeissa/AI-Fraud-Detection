@@ -47,7 +47,7 @@ if hero_path.exists():
             background-size: 100%;
             background-position: center;
             background-repeat: no-repeat;
-            min-height: 850px;
+            min-height: 800px;
             border-radius: 24px;
             padding: 45px;
             display: flex;
@@ -60,14 +60,14 @@ if hero_path.exists():
             font-size: 46px;
             font-weight: 800;
             color: #8D1930 !important;
-            margin: 0;
+            text-align: center;
+            margin-bottom: 15px;
         }}
 
         
         </style>
 
-        <div class="hero-section">
-            <div>
+        <div class="hero-section"><div>
                 <div class="hero-title">BANQUE MISR MODEL</div>
          </div>  
          </div>
