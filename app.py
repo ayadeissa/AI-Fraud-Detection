@@ -223,12 +223,7 @@ if uploaded_file is not None:
 
     df = pd.read_csv(uploaded_file)
 
-    st.markdown("### 📋 Uploaded Dataset")
-
-    st.dataframe(
-        df.head(10),
-        use_container_width=True
-    )
+   
 
     # Validation
     errors = validate_batch_data(df)
@@ -248,7 +243,9 @@ if uploaded_file is not None:
             "🔄 Apply Changes",
             use_container_width=True
         ):
-
+        st.session_state["dataset_ready"] = True
+        st.session_state["uploaded_df"] = df.copy()
+        st.rerun()
             # Make a copy of model features
             X = df[MODEL_COLS].copy()
 
@@ -291,26 +288,13 @@ if uploaded_file is not None:
 
             st.markdown("### 🚨 Fraud Detection Results")
 
-            st.dataframe(
-                df,
-                use_container_width=True
-            )
+           
 
             # ==========================================
             # DOWNLOAD RESULTS
             # ==========================================
 
-            result_csv = df.to_csv(
-                index=False
-            ).encode("utf-8")
-
-            st.download_button(
-                "⬇️ Download Results",
-                result_csv,
-                "fraud_detection_results.csv",
-                "text/csv",
-                use_container_width=True
-            )
+           
     
 else:
     st.warning("Hero image not found: assets/hero.png")
