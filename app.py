@@ -211,7 +211,7 @@ if uploaded_file is not None:
 
             X = df[MODEL_COLS].copy()
            
-            model = artifact["model"]
+            
             predictions = model.predict(X)
             probabilities = model.predict_proba(X)[:, 1]
 
