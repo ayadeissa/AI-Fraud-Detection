@@ -198,7 +198,7 @@ if ((credit_score < 550) | (credit_score > 850)).any():
  errors.append("credit_score must be between 550 and 850.")
 
 # Validate ratio columns
-    ratio_cols = [
+ratio_cols = [
         "dti_ratio",
         "pct_spent_48h",
         "pct_spent_7d",
