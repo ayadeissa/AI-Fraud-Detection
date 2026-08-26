@@ -101,47 +101,7 @@ if hero_path.exists():
         unsafe_allow_html=True,
     )
 
-if artifact is not None:
-    metrics = artifact.get("metrics", {})
-    st.markdown("### 📊 Model Performance & Analytics")
-    
-    col1, col2, col3 = st.columns(3)
-    
-    # 1. رسم ROC-AUC
-    with col1:
-        fig, ax = plt.subplots(figsize=(3, 2))
-        auc_val = metrics.get('roc_auc', 0)
-        ax.bar(['ROC-AUC'], [auc_val], color='#8D1930')
-        ax.set_ylim(0, 1)
-        ax.set_ylabel("Score")
-        for p in ax.patches:
-            ax.annotate(f"{p.get_height():.3f}", (p.get_x() + p.get_width() / 2., p.get_height() / 2),
-                        ha='center', va='center', color='white', fontweight='bold')
-        st.pyplot(fig)
 
-    # 2. رسم Accuracy
-    with col2:
-        fig, ax = plt.subplots(figsize=(3, 2))
-        acc_val = metrics.get('accuracy', 0)
-        ax.bar(['Accuracy'], [acc_val], color='#198754')
-        ax.set_ylim(0, 1)
-        for p in ax.patches:
-            ax.annotate(f"{p.get_height():.3f}", (p.get_x() + p.get_width() / 2., p.get_height() / 2),
-                        ha='center', va='center', color='white', fontweight='bold')
-        st.pyplot(fig)
-
-    # 3. رسم CV Score
-    with col3:
-        fig, ax = plt.subplots(figsize=(3, 2))
-        cv_val = metrics.get('best_cv_score', 0)
-        ax.bar(['CV Score'], [cv_val], color='#0d6efd')
-        ax.set_ylim(0, 1)
-        for p in ax.patches:
-            ax.annotate(f"{p.get_height():.3f}", (p.get_x() + p.get_width() / 2., p.get_height() / 2),
-                        ha='center', va='center', color='white', fontweight='bold')
-        st.pyplot(fig)
-
-    st.divider()
     
 else:
     st.warning("Hero image not found: assets/hero.png")
