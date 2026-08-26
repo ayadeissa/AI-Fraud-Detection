@@ -646,7 +646,7 @@ if submitted:
             st.write(f"• {error}")
     else:
         model = artifact["model"]
-        x = customer_data[MODEL_COLS].copy()
+        x = row[MODEL_COLS].copy()
         prediction = model.predict(X)[0]
 
         probability = model.predict_proba(X)[0, 1]
