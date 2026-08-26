@@ -58,9 +58,9 @@ if hero_path.exists():
                 url("data:image/png;base64,{hero_base64}");
 
             background-size: 100%;
-            background-position: center;
+            background-position: left;
             background-repeat: no-repeat;
-            min-height: 810px;
+            min-height: 350px;
             border-radius: 25px;
             padding: 45px;
             display: flex;
