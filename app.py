@@ -647,7 +647,7 @@ if submitted:
     else:
         model = artifact["model"]
         x = row[MODEL_COLS].copy()
-        prediction = model.predict(X)[0]
+        prediction = model.predict(x)[0]
 
         probability = model.predict_proba(X)[0, 1]
 
