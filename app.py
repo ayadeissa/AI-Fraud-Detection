@@ -11,11 +11,7 @@ import streamlit as st
 def get_image_base64(image_path):
     with open(image_path, "rb") as f:
         return base64.b64encode(f.read()).decode()
-artifact = load_artifact()
 
-if artifact is None:
-    st.error("Model artifact not found.")
-    st.stop()
 
 model = artifact["model"]
 
@@ -214,6 +210,11 @@ if uploaded_file is not None:
         ):
 
             X = df[MODEL_COLS].copy()
+            artifact = load_artifact()
+
+           if artifact is None:
+              st.error("Model artifact not found.")
+              st.stop()
             model = artifact["model"]
             predictions = model.predict(X)
             probabilities = model.predict_proba(X)[:, 1]
