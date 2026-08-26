@@ -675,17 +675,9 @@ if submitted:
             level
         )
 
-        st.progress(
-            float(probability),
-            text=f"Risk Probability: {probability:.1%}"
-        )
-        st.divider()
-        r1, r2, r3 = st.columns(3)
-        r1.metric("Misuse Probability", f"{probability:.1%}")
-        r2.metric("Prediction", "MISUSE" if prediction else "LEGITIMATE")
-        r3.metric("Risk Level", level)
-
-        st.progress(min(probability, 1.0))
+        st.progress(min(
+            float(probability), 1.0
+        ))
         st.info(message)
 
 
