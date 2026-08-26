@@ -209,7 +209,7 @@ ratio_cols = [
         "max_single_tx_pct"
     ]
 
-    for col in ratio_cols:
+for col in ratio_cols:
         values = pd.to_numeric(
             df[col],
             errors="coerce")
