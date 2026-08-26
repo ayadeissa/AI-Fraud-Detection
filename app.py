@@ -639,7 +639,7 @@ if submitted:
         "max_single_tx_pct": max_single_tx_pct,
     }])
 
-    errors = validate_batch_data(customer_data)
+    errors = validate_batch_data(row)
     if errors:
         st.error("❌ Invalid Customer Data")
         for error in errors:
