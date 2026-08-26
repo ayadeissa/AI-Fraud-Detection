@@ -191,7 +191,7 @@ def validate_batch_data(df):
 
 # Validate credit score
 if "credit_score" in df.columns:
-credit_score = pd.to_numeric(
+ credit_score = pd.to_numeric(
 df["credit_score"],
 errors="coerce")
 if ((credit_score < 550) | (credit_score > 850)).any():
