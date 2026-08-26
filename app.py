@@ -106,66 +106,41 @@ if artifact is not None:
     metrics = artifact.get("metrics", {})
     st.markdown("### 📊 Model Performance & Analytics")
     
-    # 1. رسم بياني لمؤشر ROC-AUC (Gauge Chart)
-    auc_val = metrics.get('roc_auc', 0)
-    fig_auc = go.Figure(go.Indicator(
-        mode = "gauge+number",
-        value = auc_val,
-        title = {'text': "Model ROC-AUC"},
-        gauge = {
-            'axis': {'range': [0, 1]},
-            'bar': {'color': "#8D1930"},
-            'steps': [
-                {'range': [0, 0.5], 'color': "#f8d7da"},
-                {'range': [0.5, 0.8], 'color': "#fff3cd"},
-                {'range': [0.8, 1.0], 'color': "#d1e7dd"}
-            ]
-        }
-    ))
-    fig_auc.update_layout(height=250, margin=dict(l=20, r=20, t=30, b=20))
-
-    # 2. رسم بياني لمؤشر Accuracy
-    acc_val = metrics.get('accuracy', 0)
-    fig_acc = go.Figure(go.Indicator(
-        mode = "gauge+number",
-        value = acc_val,
-        title = {'text': "Model Accuracy"},
-        gauge = {
-            'axis': {'range': [0, 1]},
-            'bar': {'color': "#198754"},
-            'steps': [
-                {'range': [0, 0.5], 'color': "#f8d7da"},
-                {'range': [0.5, 0.8], 'color': "#fff3cd"},
-                {'range': [0.8, 1.0], 'color': "#d1e7dd"}
-            ]
-        }
-    ))
-    fig_acc.update_layout(height=250, margin=dict(l=20, r=20, t=30, b=20))
-
-    # 3. رسم بياني لمؤشر CV Score
-    cv_val = metrics.get('best_cv_score', 0)
-    fig_cv = go.Figure(go.Indicator(
-        mode = "gauge+number",
-        value = cv_val,
-        title = {'text': "CV Score"},
-        gauge = {
-            'axis': {'range': [0, 1]},
-            'bar': {'color': "#0d6efd"},
-            'steps': [
-                {'range': [0, 0.5], 'color': "#f8d7da"},
-                {'range': [0.5, 0.8], 'color': "#fff3cd"},
-                {'range': [0.8, 1.0], 'color': "#d1e7dd"}
-            ]
-        }
-    ))
-    fig_cv.update_layout(height=250, margin=dict(l=20, r=20, t=30, b=20))
     col1, col2, col3 = st.columns(3)
+    
+    # 1. رسم ROC-AUC
     with col1:
-        st.plotly_chart(fig_auc, use_container_width=True)
+        fig, ax = plt.subplots(figsize=(3, 2))
+        auc_val = metrics.get('roc_auc', 0)
+        ax.bar(['ROC-AUC'], [auc_val], color='#8D1930')
+        ax.set_ylim(0, 1)
+        ax.set_ylabel("Score")
+        for p in ax.patches:
+            ax.annotate(f"{p.get_height():.3f}", (p.get_x() + p.get_width() / 2., p.get_height() / 2),
+                        ha='center', va='center', color='white', fontweight='bold')
+        st.pyplot(fig)
+
+    # 2. رسم Accuracy
     with col2:
-        st.plotly_chart(fig_acc, use_container_width=True)
+        fig, ax = plt.subplots(figsize=(3, 2))
+        acc_val = metrics.get('accuracy', 0)
+        ax.bar(['Accuracy'], [acc_val], color='#198754')
+        ax.set_ylim(0, 1)
+        for p in ax.patches:
+            ax.annotate(f"{p.get_height():.3f}", (p.get_x() + p.get_width() / 2., p.get_height() / 2),
+                        ha='center', va='center', color='white', fontweight='bold')
+        st.pyplot(fig)
+
+    # 3. رسم CV Score
     with col3:
-        st.plotly_chart(fig_cv, use_container_width=True)
+        fig, ax = plt.subplots(figsize=(3, 2))
+        cv_val = metrics.get('best_cv_score', 0)
+        ax.bar(['CV Score'], [cv_val], color='#0d6efd')
+        ax.set_ylim(0, 1)
+        for p in ax.patches:
+            ax.annotate(f"{p.get_height():.3f}", (p.get_x() + p.get_width() / 2., p.get_height() / 2),
+                        ha='center', va='center', color='white', fontweight='bold')
+        st.pyplot(fig)
 
     st.divider()
     
