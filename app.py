@@ -404,43 +404,43 @@ if uploaded_file is not None:
         X = df[MODEL_COLS].copy()
 
             # Convert numerical columns to numeric
-            for col in NUMERICAL_COLS:
-                X[col] = pd.to_numeric(
-                    X[col],
-                    errors="coerce"
-                )
+    for col in NUMERICAL_COLS:
+        X[col] = pd.to_numeric(
+        X[col],
+        errors="coerce"
+        )
 
             # ==========================================
             # USE THE TRAINED MODEL
             # ==========================================
-            if artifact is None:
-               st.error("❌ Model artifact not found.")
-               st.stop()
-            model = artifact["model"]
+    if artifact is None:
+        st.error("❌ Model artifact not found.")
+        st.stop()
+        model = artifact["model"]
 
-            predictions = model.predict(X)
+        predictions = model.predict(X)
 
-            probabilities = model.predict_proba(X)[:, 1]
+        probabilities = model.predict_proba(X)[:, 1]
 
             # ==========================================
             # ADD RESULTS
             # ==========================================
 
-            df["fraud_probability"] = probabilities
+        df["fraud_probability"] = probabilities
 
-            df["prediction"] = predictions
+        df["prediction"] = predictions
 
-            df["risk_level"] = pd.cut(
-                probabilities,
-                bins=[-0.01, 0.50, 0.75, 1.0],
-                labels=[
-                    "LOW",
-                    "MEDIUM",
-                    "HIGH"
-                ]
-            )
+        df["risk_level"] = pd.cut(
+        probabilities,
+        bins=[-0.01, 0.50, 0.75, 1.0],
+        labels=[
+        "LOW",
+        "MEDIUM",
+        "HIGH"
+        ]
+        )
 
-            st.markdown("### 🚨 Fraud Detection Results")
+        st.markdown("### 🚨 Fraud Detection Results")
 
            
 
