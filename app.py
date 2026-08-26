@@ -93,7 +93,69 @@ if hero_path.exists():
         unsafe_allow_html=True,
     )
 
+uploaded_file = st.file_uploader(
+    "📁 Choose your CSV file",
+    type=["csv"]
+)
 
+if uploaded_file is not None:
+    df = pd.read_csv(uploaded_file)
+
+    st.success(f"✅ Uploaded: {uploaded_file.name}")
+
+    st.dataframe(
+        df.head(10),
+        use_container_width=True
+    )
+
+    # Validation
+    errors = validate_batch_data(df)
+
+    if errors:
+        st.error("❌ Data Validation Failed")
+
+        for error in errors:
+            st.write(f"• {error}")
+
+    else:
+        st.success("✅ Data Validation Passed")
+
+        if st.button(
+            "🚨 Run Fraud Detection",
+            use_container_width=True
+        ):
+
+            X = df[MODEL_COLS].copy()
+
+            predictions = model.predict(X)
+            probabilities = model.predict_proba(X)[:, 1]
+
+            df["fraud_probability"] = probabilities
+
+            df["prediction"] = predictions
+
+            df["risk_level"] = pd.cut(
+                probabilities,
+                bins=[-0.01, 0.50, 0.75, 1.0],
+                labels=["LOW", "MEDIUM", "HIGH"]
+            )
+
+            st.dataframe(
+                df,
+                use_container_width=True
+            )
+
+            result_csv = df.to_csv(
+                index=False
+            ).encode("utf-8")
+
+            st.download_button(
+                "⬇️ Download Results",
+                result_csv,
+                "fraud_detection_results.csv",
+                "text/csv",
+                use_container_width=True
+            )
     
 else:
     st.warning("Hero image not found: assets/hero.png")
