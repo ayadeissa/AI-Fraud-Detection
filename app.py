@@ -6,7 +6,7 @@ import numpy as np
 import pandas as pd
 import streamlit as st
 
-
+MODEL_PATH = Path(__file__).parent / "model_artifact.joblib"
 
 def get_image_base64(image_path):
     with open(image_path, "rb") as f:
