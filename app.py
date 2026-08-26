@@ -202,7 +202,7 @@ if uploaded_file is not None:
         st.success("✅ Data Validation Passed")
 
         if st.button(
-            "🚨 Run Fraud Detection",
+            "🔄 Apply Changes",
             use_container_width=True
         ):
 
