@@ -96,6 +96,27 @@ if hero_path.exists():
         unsafe_allow_html=True,
     )
 
+MODEL_COLS = NUMERICAL_COLS + CATEGORICAL_COLS + ["mcc_mismatch_flag"]
+TARGET = "is_flagged_misuse"
+
+
+PURPOSES = [
+    "Medical",
+    "Equipment Purchase",
+    "Education",
+    "Business Expansion",
+    "Debt Consolidation"
+]
+
+MCC = [
+    "Retail",
+    "Casino",
+    "Crypto Exchange",
+    "Equipment Vendor",
+    "Luxury Travel",
+    "ATM Cash"
+]
+
 def validate_batch_data(df):
     errors = []
 
