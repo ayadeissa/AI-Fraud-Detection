@@ -113,33 +113,32 @@ if show_plots:
     if artifact is not None:
         metrics = artifact.get("metrics", {})
         
-        st.markdown("### 📊 Model Performance Analytics")
+        st.markdown("### 📊 Model Performance Analytics (Charts)")
         
         # 1. عرض المؤشرات الرئيسية (AUC, Accuracy, CV Score)
-        col1, col2, col3 = st.columns(3)
+        auc_val = float(metrics.get('roc_auc', 0))
+        acc_val = float(metrics.get('accuracy', 0))
+        cv_val = float(metrics.get('best_cv_score', 0))
         
-        with col1:
-            auc_val = metrics.get('roc_auc', 0)
-            st.metric("Model ROC-AUC", f"{auc_val:.3f}")
-            st.progress(float(auc_val))
-
-        with col2:
-            acc_val = metrics.get('accuracy', 0)
-            st.metric("Model Accuracy", f"{acc_val:.3f}")
-            st.progress(float(acc_val))
-
-        with col3:
-            cv_val = metrics.get('best_cv_score', 0)
-            st.metric("CV Score", f"{cv_val:.3f}")
-            st.progress(float(cv_val))
+        metrics_df = pd.DataFrame({
+            "Metric": ["Model ROC-AUC", "Model Accuracy", "CV Score"],
+            "Score": [auc_val, acc_val, cv_val]
+        }).set_index("Metric")
+        
+        # عرض الرسم البياني
+        st.bar_chart(metrics_df, height=280)
 
         st.divider()
 
-        # 2. عرض رسومات بيانية للبيانات المرفوعة (إذا كانت متوفرة)
-        st.markdown("### 📈 Data Distribution & Insights")
+        # 2. رسومات بيانية تفاعلية إضافية للبيانات
+        st.markdown("### 📈 Data Insights & Distribution Charts")
+        
         if "uploaded_df" in st.session_state:
-            st.subheader("مبالغ القروض والدخل السنوي للأعينات")
-            st.bar_chart(st.session_state["uploaded_df"][["loan_amount", "annual_income"]].head(20))
+            st.subheader("📊 رسم بياني لمبالغ القروض والدخل السنوي")
+            st.area_chart(st.session_state["uploaded_df"][["loan_amount", "annual_income"]].head(25))
+            
+            st.subheader("📊 توزيع نسبة DTI والخصائص المالية")
+            st.bar_chart(st.session_state["uploaded_df"][["dti_ratio", "pct_spent_48h", "pct_spent_7d"]].head(25))
         else:
             st.info("💡 يمكنك رفع ملف CSV لعرض التحليلات والرسومات البيانية الخاصة بالعملاء.")
 
