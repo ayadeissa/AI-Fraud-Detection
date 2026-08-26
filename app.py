@@ -92,10 +92,10 @@ if hero_path.exists():
     )
     st.markdown("### 📊 Model Performance & Analytics")
 
-        col1, col2, col3 = st.columns(3)
-        col1.metric("Model ROC-AUC", f"{artifact['auc']:.3f}")
-        col2.metric("Model Accuracy", f"{artifact['accuracy']:.3f}")
-        col3.metric("CV Score", f"{artifact['cv_score']:.3f}")
+    col1, col2, col3 = st.columns(3)
+    col1.metric("Model ROC-AUC", f"{artifact['auc']:.3f}")
+    col2.metric("Model Accuracy", f"{artifact['accuracy']:.3f}")
+    col3.metric("CV Score", f"{artifact['cv_score']:.3f}")
 
 else:
     st.warning("Hero image not found: assets/hero.png")
