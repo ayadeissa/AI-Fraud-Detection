@@ -218,9 +218,9 @@ errors.append("credit_score must be between 550 and 850.")
 
 # Validate categorical columns
 
-    for col in CATEGORICAL_COLS:
-        if df[col].isna().any():
-           errors.append(f"{col}: missing value.")
+for col in CATEGORICAL_COLS:
+ if df[col].isna().any():
+ errors.append(f"{col}: missing value.")
             
         if not df["declared_purpose"].isin(PURPOSES).all():
            errors.append("declared_purpose contains an invalid category.")
