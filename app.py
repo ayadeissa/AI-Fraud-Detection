@@ -90,7 +90,7 @@ if hero_path.exists():
         """,
         unsafe_allow_html=True,
     )
-    st.markdown("### 📊 Model Performance & Analytics")
+    st.markdown("### 📊 Model Performance & Analytics"),
 
         col1, col2, col3 = st.columns(3),
         col1.metric("Model ROC-AUC", f"{artifact['auc']:.3f}"),
