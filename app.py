@@ -488,8 +488,7 @@ if uploaded_file is not None:
 
            
     
-else:
-    st.warning("Hero image not found: assets/hero.png")
+
 
 PURPOSES = [
     "Medical", "Equipment Purchase", "Education",
