@@ -120,13 +120,12 @@ if show_plots:
         acc_val = float(metrics.get('accuracy', 0))
         cv_val = float(metrics.get('best_cv_score', 0))
         
-        metrics_df = pd.DataFrame({
-            "Metric": ["Model ROC-AUC", "Model Accuracy", "CV Score"],
+        combined_metrics_df = pd.DataFrame({
             "Score": [auc_val, acc_val, cv_val]
-        }).set_index("Metric")
+        }, index=["Model ROC-AUC", "Model Accuracy", "CV Score"])
         
-        # عرض الرسم البياني
-        st.bar_chart(metrics_df, height=280)
+        # عرض الرسم البياني الشريطي المدمج
+        st.bar_chart(combined_metrics_df, height=300)
 
         st.divider()
 
@@ -140,10 +139,9 @@ if show_plots:
             st.subheader("📊 توزيع نسبة DTI والخصائص المالية")
             st.bar_chart(st.session_state["uploaded_df"][["dti_ratio", "pct_spent_48h", "pct_spent_7d"]].head(25))
         else:
-            st.info("💡 يمكنك رفع ملف CSV لعرض التحليلات والرسومات البيانية الخاصة بالعملاء.")
+            st.info("💡 قم برفع ملف CSV لعرض التحليلات والرسومات البيانية الخاصة بالعملاء.")
 
     st.divider()
-
 
 MODEL_COLS = NUMERICAL_COLS + CATEGORICAL_COLS + ["mcc_mismatch_flag"]
 TARGET = "is_flagged_misuse"
