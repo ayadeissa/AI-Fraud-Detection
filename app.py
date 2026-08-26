@@ -212,7 +212,7 @@ if uploaded_file is not None:
             X = df[MODEL_COLS].copy()
             artifact = load_artifact()
 
-           if artifact is None:
+        if artifact is None:
               st.error("Model artifact not found.")
               st.stop()
             model = artifact["model"]
