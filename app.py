@@ -208,7 +208,161 @@ def validate_batch_data(df):
 
     return errors
 
+if st.session_state.get("dataset_ready", False):
 
+    st.markdown("## 👤 Customer Risk Assessment")
+    st.caption(
+        "Enter the customer's information to evaluate misuse risk."
+    )
+
+    with st.form("customer_form"):
+
+        col1, col2, col3 = st.columns(3)
+
+        with col1:
+            loan_amount = st.number_input(
+                "Loan Amount",
+                min_value=0.0,
+                value=50000.0
+            )
+
+            credit_score = st.number_input(
+                "Credit Score",
+                min_value=550,
+                max_value=850,
+                value=700
+            )
+
+            annual_income = st.number_input(
+                "Annual Income",
+                min_value=0.0,
+                value=100000.0
+            )
+
+            dti_ratio = st.number_input(
+                "DTI Ratio",
+                min_value=0.0,
+                max_value=1.0,
+                value=0.30
+            )
+
+            employment_length_years = st.number_input(
+                "Employment Length (Years)",
+                min_value=0,
+                value=5
+            )
+
+            num_existing_loans = st.number_input(
+                "Existing Loans",
+                min_value=0,
+                value=2
+            )
+
+        with col2:
+            account_age_months = st.number_input(
+                "Account Age (Months)",
+                min_value=0,
+                value=36
+            )
+
+            declared_purpose = st.selectbox(
+                "Declared Purpose",
+                PURPOSES
+            )
+
+            primary_mcc_category = st.selectbox(
+                "Primary MCC Category",
+                MCC
+            )
+
+            secondary_mcc_category = st.selectbox(
+                "Secondary MCC Category",
+                MCC
+            )
+
+            mcc_mismatch_flag = st.selectbox(
+                "MCC Mismatch",
+                [0, 1]
+            )
+
+            days_to_first_tx = st.number_input(
+                "Days to First Transaction",
+                min_value=0,
+                value=10
+            )
+
+        with col3:
+            pct_spent_48h = st.number_input(
+                "Spent in 48h",
+                min_value=0.0,
+                max_value=1.0,
+                value=0.50
+            )
+
+            pct_spent_7d = st.number_input(
+                "Spent in 7 Days",
+                min_value=0.0,
+                max_value=1.0,
+                value=0.70
+            )
+
+            cash_withdrawal_ratio = st.number_input(
+                "Cash Withdrawal Ratio",
+                min_value=0.0,
+                max_value=1.0,
+                value=0.20
+            )
+
+            high_risk_spend_ratio = st.number_input(
+                "High Risk Spend Ratio",
+                min_value=0.0,
+                max_value=1.0,
+                value=0.20
+            )
+
+            international_tx_ratio = st.number_input(
+                "International Transaction Ratio",
+                min_value=0.0,
+                max_value=1.0,
+                value=0.10
+            )
+
+            nighttime_tx_ratio = st.number_input(
+                "Nighttime Transaction Ratio",
+                min_value=0.0,
+                max_value=1.0,
+                value=0.10
+            )
+
+            num_unique_merchants = st.number_input(
+                "Unique Merchants",
+                min_value=0,
+                value=10
+            )
+
+            num_total_transactions = st.number_input(
+                "Total Transactions",
+                min_value=0,
+                value=20
+            )
+
+            avg_tx_amount = st.number_input(
+                "Average Transaction Amount",
+                min_value=0.0,
+                value=1000.0
+            )
+
+            max_single_tx_pct = st.number_input(
+                "Maximum Single Transaction %",
+                min_value=0.0,
+                max_value=1.0,
+                value=0.50
+            )
+
+        submitted = st.form_submit_button(
+            "🚨 Predict Customer Risk",
+            use_container_width=True
+        )
 # =========================================================
 # BATCH DATA UPLOAD
 # =========================================================
@@ -448,18 +602,17 @@ if submitted:
         "max_single_tx_pct": max_single_tx_pct,
     }])
 
-    errors = validate_input(row)
+    errors = validate_batch_data(customer_data)
     if errors:
-        st.error("Validation failed — prediction blocked.")
-        for e in errors:
-            st.write("•", e)
+        st.error(""❌ Invalid Customer Data"")
+        for error in errors:
+            st.write(f"• {error}")
     else:
-        x = row[MODEL_COLS].copy()
-        for col in NUMERICAL_COLS:
-            x[col] = pd.to_numeric(x[col])
+        model = artifact["model"]
+        x = customer_data[MODEL_COLS].copy()
+        prediction = model.predict(X)[0]
 
-        probability = float(model.predict_proba(x)[0, 1])
-        prediction = int(probability >= 0.5)
+        probability = model.predict_proba(X)[0, 1]
 
         if probability >= 0.75:
             level, message = "🔴 HIGH RISK", "Immediate review recommended."
@@ -467,7 +620,28 @@ if submitted:
             level, message = "🟠 MEDIUM RISK", "Enhanced review recommended."
         else:
             level, message = "🟢 LOW RISK", "No elevated model signal."
+        st.markdown("## 🎯 Risk Assessment")
 
+        c1, c2, c3 = st.columns(3)
+
+        c1.metric(
+            "Fraud Probability",
+            f"{probability:.1%}"
+        )
+        c2.metric(
+            "Prediction",
+            "MISUSE" if prediction == 1 else "LEGITIMATE"
+        )
+
+        c3.metric(
+            "Risk Level",
+            risk
+        )
+
+        st.progress(
+            float(probability),
+            text=f"Risk Probability: {probability:.1%}"
+        )
         st.divider()
         r1, r2, r3 = st.columns(3)
         r1.metric("Misuse Probability", f"{probability:.1%}")
