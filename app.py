@@ -104,6 +104,48 @@ if hero_path.exists():
         unsafe_allow_html=True,
     )
 
+# ==========================================
+# TOGGLE VISUALIZATIONS & PLOTS
+# ==========================================
+show_plots = st.checkbox("📊 عرض كافة الرسميات البيانية والتحليلات (Show Analytics & Plots)")
+
+if show_plots:
+    if artifact is not None:
+        metrics = artifact.get("metrics", {})
+        
+        st.markdown("### 📊 Model Performance Analytics")
+        
+        # 1. عرض المؤشرات الرئيسية (AUC, Accuracy, CV Score)
+        col1, col2, col3 = st.columns(3)
+        
+        with col1:
+            auc_val = metrics.get('roc_auc', 0)
+            st.metric("Model ROC-AUC", f"{auc_val:.3f}")
+            st.progress(float(auc_val))
+
+        with col2:
+            acc_val = metrics.get('accuracy', 0)
+            st.metric("Model Accuracy", f"{acc_val:.3f}")
+            st.progress(float(acc_val))
+
+        with col3:
+            cv_val = metrics.get('best_cv_score', 0)
+            st.metric("CV Score", f"{cv_val:.3f}")
+            st.progress(float(cv_val))
+
+        st.divider()
+
+        # 2. عرض رسومات بيانية للبيانات المرفوعة (إذا كانت متوفرة)
+        st.markdown("### 📈 Data Distribution & Insights")
+        if "uploaded_df" in st.session_state:
+            st.subheader("مبالغ القروض والدخل السنوي للأعينات")
+            st.bar_chart(st.session_state["uploaded_df"][["loan_amount", "annual_income"]].head(20))
+        else:
+            st.info("💡 يمكنك رفع ملف CSV لعرض التحليلات والرسومات البيانية الخاصة بالعملاء.")
+
+    st.divider()
+
+
 MODEL_COLS = NUMERICAL_COLS + CATEGORICAL_COLS + ["mcc_mismatch_flag"]
 TARGET = "is_flagged_misuse"
 
