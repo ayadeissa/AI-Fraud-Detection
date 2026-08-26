@@ -254,7 +254,9 @@ if uploaded_file is not None:
             # ==========================================
             # USE THE TRAINED MODEL
             # ==========================================
-
+            if artifact is None:
+               st.error("❌ Model artifact not found.")
+               st.stop()
             model = artifact["model"]
 
             predictions = model.predict(X)
