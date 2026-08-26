@@ -386,7 +386,7 @@ errors = validate_batch_data(df)
 if errors:
    st.error("❌ Data Validation Failed")
 
-    for error in errors:
+for error in errors:
         st.write(f"• {error}")
 
 else:
