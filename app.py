@@ -72,7 +72,7 @@ if hero_path.exists():
         .hero-title {{
             font-size: 46px;
             font-weight: 800;
-            color: #8D1930 !important;
+            color: #FFC107 !important;
             text-align: center;
             margin-bottom: -10px;
         }}
