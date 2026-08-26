@@ -45,7 +45,7 @@ CATEGORICAL_COLS = [
 MODEL_COLS = NUMERICAL_COLS + CATEGORICAL_COLS + ["mcc_mismatch_flag"]
 TARGET = "is_flagged_misuse"
 
-hero_path = Path(__file__).parent / "assets"  / "ChatGPT Image Aug 25, 2026, 11_14_42 PM.png"
+hero_path = Path(__file__).parent / "assets"  / "bank misr.png"
 
 if hero_path.exists():
     hero_base64 = get_image_base64(hero_path)
