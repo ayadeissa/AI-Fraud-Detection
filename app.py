@@ -99,9 +99,11 @@ if hero_path.exists():
 def validate_batch_data(df):
     errors = []
 
-    # Required columns
+    # Check required columns
+    required_columns = MODEL_COLS
+
     missing_columns = [
-        col for col in MODEL_COLS
+        col for col in required_columns
         if col not in df.columns
     ]
 
@@ -111,47 +113,32 @@ def validate_batch_data(df):
         )
         return errors
 
-    # Numeric data types
+    # Validate numerical columns
     for col in NUMERICAL_COLS:
-        if not pd.api.types.is_numeric_dtype(df[col]):
-            errors.append(
-                f"{col}: Expected numeric, got {df[col].dtype}"
-            )
-
-    # Categorical data types
-    for col in CATEGORICAL_COLS:
-        if not (
-            pd.api.types.is_object_dtype(df[col])
-            or pd.api.types.is_string_dtype(df[col])
-        ):
-            errors.append(
-                f"{col}: Expected categorical/text, got {df[col].dtype}"
-            )
-
-    # Missing values
-    for col in MODEL_COLS:
-        missing = df[col].isna().sum()
-
-        if missing > 0:
-            errors.append(
-                f"{col}: {missing} missing value(s)"
-            )
-
-    # Credit score range
-    if "credit_score" in df.columns:
-        invalid = (
-            (df["credit_score"] < 550)
-            | (df["credit_score"] > 850)
+        numeric_values = pd.to_numeric(
+            df[col],
+            errors="coerce"
         )
 
-        if invalid.any():
+        if numeric_values.isna().any():
             errors.append(
-                f"credit_score: {invalid.sum()} "
-                "value(s) must be between 550 and 850"
+                f"{col}: invalid or missing numeric value."
             )
 
-    # Ratio range 0 → 1
-    ratio_columns = [
+    # Validate credit score
+    if "credit_score" in df.columns:
+        credit_score = pd.to_numeric(
+            df["credit_score"],
+            errors="coerce"
+        )
+
+        if ((credit_score < 550) | (credit_score > 850)).any():
+            errors.append(
+                "credit_score must be between 550 and 850."
+            )
+
+    # Validate ratio columns
+    ratio_cols = [
         "dti_ratio",
         "pct_spent_48h",
         "pct_spent_7d",
@@ -162,30 +149,52 @@ def validate_batch_data(df):
         "max_single_tx_pct"
     ]
 
-    for col in ratio_columns:
-        if col in df.columns:
-            invalid = (
-                (df[col] < 0)
-                | (df[col] > 1)
+    for col in ratio_cols:
+        values = pd.to_numeric(
+            df[col],
+            errors="coerce"
+        )
+
+        if ((values < 0) | (values > 1)).any():
+            errors.append(
+                f"{col} must be between 0 and 1."
             )
 
-            if invalid.any():
-                errors.append(
-                    f"{col}: {invalid.sum()} "
-                    "value(s) must be between 0 and 1"
-                )
+    # Validate categorical columns
+    for col in CATEGORICAL_COLS:
+        if df[col].isna().any():
+            errors.append(
+                f"{col}: missing value."
+            )
+
+    if not df["declared_purpose"].isin(PURPOSES).all():
+        errors.append(
+            "declared_purpose contains an invalid category."
+        )
+
+    if not df["primary_mcc_category"].isin(MCC).all():
+        errors.append(
+            "primary_mcc_category contains an invalid category."
+        )
 
     return errors
 
+
+# =========================================================
+# BATCH DATA UPLOAD
+# =========================================================
+
 uploaded_file = st.file_uploader(
-    "📁 Choose your CSV file",
-    type=["csv"]
+    "📁 Upload Dataset",
+    type=["csv"],
+    help="Upload a CSV file containing the model features."
 )
 
 if uploaded_file is not None:
+
     df = pd.read_csv(uploaded_file)
 
-    st.success(f"✅ Uploaded: {uploaded_file.name}")
+    st.markdown("### 📋 Uploaded Dataset")
 
     st.dataframe(
         df.head(10),
@@ -196,12 +205,14 @@ if uploaded_file is not None:
     errors = validate_batch_data(df)
 
     if errors:
+
         st.error("❌ Data Validation Failed")
 
         for error in errors:
             st.write(f"• {error}")
 
     else:
+
         st.success("✅ Data Validation Passed")
 
         if st.button(
@@ -209,11 +220,29 @@ if uploaded_file is not None:
             use_container_width=True
         ):
 
+            # Make a copy of model features
             X = df[MODEL_COLS].copy()
-           
+
+            # Convert numerical columns to numeric
+            for col in NUMERICAL_COLS:
+                X[col] = pd.to_numeric(
+                    X[col],
+                    errors="coerce"
+                )
+
+            # ==========================================
+            # USE THE TRAINED MODEL
+            # ==========================================
+
             model = artifact["model"]
+
             predictions = model.predict(X)
+
             probabilities = model.predict_proba(X)[:, 1]
+
+            # ==========================================
+            # ADD RESULTS
+            # ==========================================
 
             df["fraud_probability"] = probabilities
 
@@ -222,13 +251,23 @@ if uploaded_file is not None:
             df["risk_level"] = pd.cut(
                 probabilities,
                 bins=[-0.01, 0.50, 0.75, 1.0],
-                labels=["LOW", "MEDIUM", "HIGH"]
+                labels=[
+                    "LOW",
+                    "MEDIUM",
+                    "HIGH"
+                ]
             )
+
+            st.markdown("### 🚨 Fraud Detection Results")
 
             st.dataframe(
                 df,
                 use_container_width=True
             )
+
+            # ==========================================
+            # DOWNLOAD RESULTS
+            # ==========================================
 
             result_csv = df.to_csv(
                 index=False
