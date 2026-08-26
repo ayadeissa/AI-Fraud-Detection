@@ -195,7 +195,7 @@ if "credit_score" in df.columns:
 df["credit_score"],
 errors="coerce")
 if ((credit_score < 550) | (credit_score > 850)).any():
-errors.append("credit_score must be between 550 and 850.")
+ errors.append("credit_score must be between 550 and 850.")
 
 # Validate ratio columns
     ratio_cols = [
