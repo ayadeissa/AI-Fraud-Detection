@@ -401,7 +401,7 @@ if uploaded_file is not None:
         st.session_state["uploaded_df"] = df.copy()
         st.rerun()
             # Make a copy of model features
-            X = df[MODEL_COLS].copy()
+        X = df[MODEL_COLS].copy()
 
             # Convert numerical columns to numeric
             for col in NUMERICAL_COLS:
