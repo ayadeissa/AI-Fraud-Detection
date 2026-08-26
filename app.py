@@ -678,6 +678,6 @@ if submitted:
         st.progress(min(
             float(probability), 1.0
         ))
-        st.info(message)
+        
 
 
