@@ -460,21 +460,7 @@ if uploaded_file is not None:
             ]
         )
 
-        st.markdown("### 🚨 Fraud Detection Results")
-
-        # ==========================================
-        # DOWNLOAD RESULTS
-        # ==========================================
-
-        csv_result = df.to_csv(index=False).encode("utf-8")
-
-        st.download_button(
-            "⬇️ Download Fraud Detection Results",
-            data=csv_result,
-            file_name="fraud_detection_results.csv",
-            mime="text/csv",
-            use_container_width=True
-        )
+       
 
 PURPOSES = [
     "Medical", "Equipment Purchase", "Education",
