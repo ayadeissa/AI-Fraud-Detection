@@ -404,10 +404,10 @@ if uploaded_file is not None:
         X = df[MODEL_COLS].copy()
 
             # Convert numerical columns to numeric
-    for col in NUMERICAL_COLS:
-        X[col] = pd.to_numeric(X[col],
-        errors="coerce"
-        )
+        for col in NUMERICAL_COLS:
+            X[col] = pd.to_numeric(X[col],
+            errors="coerce"
+            )
 
             # ==========================================
             # USE THE TRAINED MODEL
@@ -608,7 +608,7 @@ if submitted:
             st.write(f"• {error}")
     else:
         model = artifact["model"]
-        X = customer_data[MODEL_COLS].copy()
+        x = customer_data[MODEL_COLS].copy()
         prediction = model.predict(X)[0]
 
         probability = model.predict_proba(X)[0, 1]
