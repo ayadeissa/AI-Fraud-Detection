@@ -393,9 +393,9 @@ if uploaded_file is not None:
 
         st.success("✅ Data Validation Passed")
 
-        if st.button(
-            "🔄 Apply Changes",
-            use_container_width=True
+    if st.button(
+        "🔄 Apply Changes",
+        use_container_width=True
         ):
         st.session_state["dataset_ready"] = True
         st.session_state["uploaded_df"] = df.copy()
