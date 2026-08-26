@@ -226,7 +226,7 @@ if not df["declared_purpose"].isin(PURPOSES).all():
 if not df["primary_mcc_category"].isin(MCC).all():
  errors.append("primary_mcc_category contains an invalid category.")
 return errors
-    if st.session_state.get("dataset_ready", False):
+if st.session_state.get("dataset_ready", False):
        st.markdown("## 👤 Customer Risk Assessment")
        st.caption("Enter the customer's information to evaluate misuse risk.")
 
