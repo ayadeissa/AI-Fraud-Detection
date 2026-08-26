@@ -189,26 +189,15 @@ def validate_batch_data(df):
         )
 
 
-def validate_batch_data(df):
-    errors = []
-    # Check required columns
-    required_columns = MODEL_COLS
-    missing_columns = [col for col in required_columns if col not in df.columns]
-    if missing_columns:
-        errors.append("Missing columns: " + ", ".join(missing_columns))
-        return errors
+# Validate credit score
+    if "credit_score" in df.columns:
+        credit_score = pd.to_numeric(
+        df["credit_score"],
+        errors="coerce")
+    if ((credit_score < 550) | (credit_score > 850)).any():
+        errors.append("credit_score must be between 550 and 850.")
 
-    # Validate numerical columns
-    for col in NUMERICAL_COLS:
-        numeric_values = pd.to_numeric(df[col], errors="coerce")
-
-    # Validate credit score
-    if "credit_score" in df.columns:
-        credit_score = pd.to_numeric(df["credit_score"], errors="coerce")
-        if ((credit_score < 550) | (credit_score > 850)).any():
-            errors.append("credit_score must be between 550 and 850.")
-
-    # Validate ratio columns
+# Validate ratio columns
     ratio_cols = [
         "dti_ratio",
         "pct_spent_48h",
@@ -219,20 +208,201 @@ def validate_batch_data(df):
         "nighttime_tx_ratio",
         "max_single_tx_pct"
     ]
+
     for col in ratio_cols:
-        values = pd.to_numeric(df[col], errors="coerce")
+        values = pd.to_numeric(
+            df[col],
+            errors="coerce")
         if ((values < 0) | (values > 1)).any():
             errors.append(f"{col} must be between 0 and 1.")
 
-    # Validate categorical columns
-    for col in CATEGORICAL_COLS:
-        if df[col].isna().any():
-            errors.append(f"{col}: missing value.")
+# Validate categorical columns
 
-    if not df["declared_purpose"].isin(PURPOSES).all():
-        errors.append("declared_purpose contains an invalid category.")
+    for col in CATEGORICAL_COLS:
+        if df[col].isna().any():
+           errors.append(f"{col}: missing value.")
+            
+        if not df["declared_purpose"].isin(PURPOSES).all():
+           errors.append("declared_purpose contains an invalid category.")
+        if not df["primary_mcc_category"].isin(MCC).all():
+           errors.append("primary_mcc_category contains an invalid category.")
+        return errors
+        
+    if st.session_state.get("dataset_ready", False):
+       st.markdown("## 👤 Customer Risk Assessment")
+       st.caption("Enter the customer's information to evaluate misuse risk.")
 
-    if not df["primary_mcc_category"].isin(MCC).all():
-        errors.append("primary_mcc_category contains an invalid category.")
+       with st.form("customer_form"):
+         col1, col2, col3 = st.columns(3)
 
-    return errors
+         with col1:
+           loan_amount = st.number_input("Loan Amount",
+                min_value=0.0,
+                value=50000.0)
+            
+           credit_score = st.number_input(
+                "Credit Score",
+                min_value=550,
+                max_value=850,
+                value=700)
+           annual_income = st.number_input(
+                "Annual Income",
+                min_value=0.0,
+                value=100000.0
+           )
+
+           dti_ratio = st.number_input(
+                "DTI Ratio",
+                min_value=0.0,
+                max_value=1.0,
+                value=0.30
+           )
+
+           employment_length_years = st.number_input(
+                "Employment Length (Years)",
+                min_value=0,
+                value=5
+            )
+
+           num_existing_loans = st.number_input(
+                "Existing Loans",
+                min_value=0,
+                value=2
+            )
+
+         with col2:
+            account_age_months = st.number_input(
+                "Account Age (Months)",
+                min_value=0,
+                value=36
+            )
+            declared_purpose = st.selectbox(
+                "Declared Purpose",
+                PURPOSES
+            )
+            primary_mcc_category = st.selectbox(
+                "Primary MCC Category",
+                MCC
+            )
+            secondary_mcc_category = st.selectbox(
+                "Secondary MCC Category",
+                MCC
+            )
+            mcc_mismatch_flag = st.selectbox(
+                "MCC Mismatch",
+                [0, 1]
+            )
+            days_to_first_tx = st.number_input(
+                "Days to First Transaction",
+                min_value=0,
+                value=10
+            )
+         with col3:
+            pct_spent_48h = st.number_input(
+                "Spent in 48h",
+                min_value=0.0,
+                max_value=1.0,
+                value=0.50
+            )
+
+            pct_spent_7d = st.number_input(
+                "Spent in 7 Days",
+                min_value=0.0,
+                max_value=1.0,
+                value=0.70
+            )
+
+            cash_withdrawal_ratio = st.number_input(
+                "Cash Withdrawal Ratio",
+                min_value=0.0,
+                max_value=1.0,
+                value=0.20
+            )
+
+            high_risk_spend_ratio = st.number_input(
+                "High Risk Spend Ratio",
+                min_value=0.0,
+                max_value=1.0,
+                value=0.20
+            )
+
+            international_tx_ratio = st.number_input(
+                "International Transaction Ratio",
+                min_value=0.0,
+                max_value=1.0,
+                value=0.10
+            )
+
+            nighttime_tx_ratio = st.number_input(
+                "Nighttime Transaction Ratio",
+                min_value=0.0,
+                max_value=1.0,
+                value=0.10
+            )
+
+            num_unique_merchants = st.number_input(
+                "Unique Merchants",
+                min_value=0,
+                value=10
+            )
+
+            num_total_transactions = st.number_input(
+                "Total Transactions",
+                min_value=0,
+                value=20
+            )
+
+            avg_tx_amount = st.number_input(
+                "Average Transaction Amount",
+                min_value=0.0,
+                value=1000.0
+            )
+
+            max_single_tx_pct = st.number_input(
+                "Maximum Single Transaction %",
+                min_value=0.0,
+                max_value=1.0,
+                value=0.50
+            )
+
+         submitted = st.form_submit_button(
+            "🚨 Predict Customer Risk",
+            use_container_width=True
+        )
+
+
+# =========================================================
+# BATCH DATA UPLOAD
+# =========================================================
+
+uploaded_file = st.file_uploader(
+    "📁 Upload Dataset",
+    type=["csv"],
+    help="Upload a CSV file containing the model features."
+    )
+
+if uploaded_file is not None:
+    df = pd.read_csv(uploaded_file)
+    # Validation
+errors = validate_batch_data(df)
+if errors:
+   st.error("❌ Data Validation Failed")
+
+    for error in errors:
+        st.write(f"• {error}")
+
+else:
+    st.success("✅ Data Validation Passed")
+
+if st.button("🔄 Apply Changes",
+   use_container_width=True):
+   st.session_state["dataset_ready"] = True
+   st.session_state["uploaded_df"] = df.copy()
+   st.rerun()
+            # Make a copy of model features
+ X = df[MODEL_COLS].copy()
+
+            # Convert numerical columns to numeric
+for col in NUMERICAL_COLS:
+    X[col] = pd.to_numeric(X[col],
+    errors="coerce")    
