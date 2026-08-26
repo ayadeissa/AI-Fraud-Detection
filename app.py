@@ -222,7 +222,7 @@ for col in CATEGORICAL_COLS:
     if df[col].isna().any():
      errors.append(f"{col}: missing value.")
 if not df["declared_purpose"].isin(PURPOSES).all():
-errors.append("declared_purpose contains an invalid category.")
+ errors.append("declared_purpose contains an invalid category.")
 if not df["primary_mcc_category"].isin(MCC).all():
 errors.append("primary_mcc_category contains an invalid category.")
 return errors
