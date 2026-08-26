@@ -93,6 +93,87 @@ if hero_path.exists():
         unsafe_allow_html=True,
     )
 
+def validate_batch_data(df):
+    errors = []
+
+    # Required columns
+    missing_columns = [
+        col for col in MODEL_COLS
+        if col not in df.columns
+    ]
+
+    if missing_columns:
+        errors.append(
+            "Missing columns: " + ", ".join(missing_columns)
+        )
+        return errors
+
+    # Numeric data types
+    for col in NUMERICAL_COLS:
+        if not pd.api.types.is_numeric_dtype(df[col]):
+            errors.append(
+                f"{col}: Expected numeric, got {df[col].dtype}"
+            )
+
+    # Categorical data types
+    for col in CATEGORICAL_COLS:
+        if not (
+            pd.api.types.is_object_dtype(df[col])
+            or pd.api.types.is_string_dtype(df[col])
+        ):
+            errors.append(
+                f"{col}: Expected categorical/text, got {df[col].dtype}"
+            )
+
+    # Missing values
+    for col in MODEL_COLS:
+        missing = df[col].isna().sum()
+
+        if missing > 0:
+            errors.append(
+                f"{col}: {missing} missing value(s)"
+            )
+
+    # Credit score range
+    if "credit_score" in df.columns:
+        invalid = (
+            (df["credit_score"] < 550)
+            | (df["credit_score"] > 850)
+        )
+
+        if invalid.any():
+            errors.append(
+                f"credit_score: {invalid.sum()} "
+                "value(s) must be between 550 and 850"
+            )
+
+    # Ratio range 0 → 1
+    ratio_columns = [
+        "dti_ratio",
+        "pct_spent_48h",
+        "pct_spent_7d",
+        "cash_withdrawal_ratio",
+        "high_risk_spend_ratio",
+        "international_tx_ratio",
+        "nighttime_tx_ratio",
+        "max_single_tx_pct"
+    ]
+
+    for col in ratio_columns:
+        if col in df.columns:
+            invalid = (
+                (df[col] < 0)
+                | (df[col] > 1)
+            )
+
+            if invalid.any():
+                errors.append(
+                    f"{col}: {invalid.sum()} "
+                    "value(s) must be between 0 and 1"
+                )
+
+    return errors
+
 uploaded_file = st.file_uploader(
     "📁 Choose your CSV file",
     type=["csv"]
