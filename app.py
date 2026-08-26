@@ -672,7 +672,7 @@ if submitted:
 
         c3.metric(
             "Risk Level",
-            risk
+            level
         )
 
         st.progress(
