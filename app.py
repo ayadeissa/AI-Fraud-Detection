@@ -403,4 +403,4 @@ X = df[MODEL_COLS].copy()
             # Convert numerical columns to numeric
 for col in NUMERICAL_COLS:
     X[col] = pd.to_numeric(X[col],
-    errors="coerce")    
+    errors="coerce")
