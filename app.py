@@ -604,7 +604,7 @@ if submitted:
 
     errors = validate_batch_data(customer_data)
     if errors:
-        st.error(""❌ Invalid Customer Data"")
+        st.error("❌ Invalid Customer Data")
         for error in errors:
             st.write(f"• {error}")
     else:
