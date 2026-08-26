@@ -18,14 +18,6 @@ st.set_page_config(
     layout="wide",
 )
 
-@st.cache_resource
-def load_artifact():
-    if not MODEL_PATH.exists():
-        return None
-    return joblib.load(MODEL_PATH)
-
-artifact = load_artifact()
-
 MODEL_PATH = Path(__file__).parent / "model_artifact.joblib"
 
 NUMERICAL_COLS = [
