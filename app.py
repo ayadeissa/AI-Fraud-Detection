@@ -5,6 +5,8 @@ import joblib
 import numpy as np
 import pandas as pd
 import streamlit as st
+import plotly.graph_objects as go
+
 
 def get_image_base64(image_path):
     with open(image_path, "rb") as f:
@@ -98,15 +100,73 @@ if hero_path.exists():
         """,
         unsafe_allow_html=True,
     )
+
 if artifact is not None:
     metrics = artifact.get("metrics", {})
     st.markdown("### 📊 Model Performance & Analytics")
-    col1, col2, col3 = st.columns(3)
-    col1.metric("Model ROC-AUC", f"{metrics.get('roc_auc', 0):.3f}")
-    col2.metric("Model Accuracy", f"{metrics.get('accuracy', 0):.3f}")
-    col3.metric("CV Score", f"{metrics.get('best_cv_score', 0):.3f}")
-    st.divider()
+    
+    # 1. رسم بياني لمؤشر ROC-AUC (Gauge Chart)
+    auc_val = metrics.get('roc_auc', 0)
+    fig_auc = go.Figure(go.Indicator(
+        mode = "gauge+number",
+        value = auc_val,
+        title = {'text': "Model ROC-AUC"},
+        gauge = {
+            'axis': {'range': [0, 1]},
+            'bar': {'color': "#8D1930"},
+            'steps': [
+                {'range': [0, 0.5], 'color': "#f8d7da"},
+                {'range': [0.5, 0.8], 'color': "#fff3cd"},
+                {'range': [0.8, 1.0], 'color': "#d1e7dd"}
+            ]
+        }
+    ))
+    fig_auc.update_layout(height=250, margin=dict(l=20, r=20, t=30, b=20))
 
+    # 2. رسم بياني لمؤشر Accuracy
+    acc_val = metrics.get('accuracy', 0)
+    fig_acc = go.Figure(go.Indicator(
+        mode = "gauge+number",
+        value = acc_val,
+        title = {'text': "Model Accuracy"},
+        gauge = {
+            'axis': {'range': [0, 1]},
+            'bar': {'color': "#198754"},
+            'steps': [
+                {'range': [0, 0.5], 'color': "#f8d7da"},
+                {'range': [0.5, 0.8], 'color': "#fff3cd"},
+                {'range': [0.8, 1.0], 'color': "#d1e7dd"}
+            ]
+        }
+    ))
+    fig_acc.update_layout(height=250, margin=dict(l=20, r=20, t=30, b=20))
+
+    # 3. رسم بياني لمؤشر CV Score
+    cv_val = metrics.get('best_cv_score', 0)
+    fig_cv = go.Figure(go.Indicator(
+        mode = "gauge+number",
+        value = cv_val,
+        title = {'text': "CV Score"},
+        gauge = {
+            'axis': {'range': [0, 1]},
+            'bar': {'color': "#0d6efd"},
+            'steps': [
+                {'range': [0, 0.5], 'color': "#f8d7da"},
+                {'range': [0.5, 0.8], 'color': "#fff3cd"},
+                {'range': [0.8, 1.0], 'color': "#d1e7dd"}
+            ]
+        }
+    ))
+    fig_cv.update_layout(height=250, margin=dict(l=20, r=20, t=30, b=20))
+    col1, col2, col3 = st.columns(3)
+    with col1:
+        st.plotly_chart(fig_auc, use_container_width=True)
+    with col2:
+        st.plotly_chart(fig_acc, use_container_width=True)
+    with col3:
+        st.plotly_chart(fig_cv, use_container_width=True)
+
+    st.divider()
     
 else:
     st.warning("Hero image not found: assets/hero.png")
