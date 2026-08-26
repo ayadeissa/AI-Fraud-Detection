@@ -190,7 +190,7 @@ def validate_batch_data(df):
 
 
 # Validate credit score
-    if "credit_score" in df.columns:
+   if "credit_score" in df.columns:
         credit_score = pd.to_numeric(
         df["credit_score"],
         errors="coerce")
