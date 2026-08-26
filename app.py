@@ -16,6 +16,14 @@ st.set_page_config(
     layout="wide",
 )
 
+@st.cache_resource
+def load_artifact():
+    if not MODEL_PATH.exists():
+        return None
+    return joblib.load(MODEL_PATH)
+
+artifact = load_artifact()
+
 MODEL_PATH = Path(__file__).parent / "model_artifact.joblib"
 
 NUMERICAL_COLS = [
@@ -90,13 +98,16 @@ if hero_path.exists():
         """,
         unsafe_allow_html=True,
     )
+if artifact is not None:
+    metrics = artifact.get("metrics", {})
     st.markdown("### 📊 Model Performance & Analytics")
-
     col1, col2, col3 = st.columns(3)
-    col1.metric("Model ROC-AUC", f"{artifact['auc']:.3f}")
-    col2.metric("Model Accuracy", f"{artifact['accuracy']:.3f}")
-    col3.metric("CV Score", f"{artifact['cv_score']:.3f}")
+    col1.metric("Model ROC-AUC", f"{metrics.get('roc_auc', 0):.3f}")
+    col2.metric("Model Accuracy", f"{metrics.get('accuracy', 0):.3f}")
+    col3.metric("CV Score", f"{metrics.get('best_cv_score', 0):.3f}")
+    st.divider()
 
+    
 else:
     st.warning("Hero image not found: assets/hero.png")
 
