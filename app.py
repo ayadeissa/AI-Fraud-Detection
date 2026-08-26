@@ -649,7 +649,7 @@ if submitted:
         x = row[MODEL_COLS].copy()
         prediction = model.predict(x)[0]
 
-        probability = model.predict_proba(X)[0, 1]
+        probability = model.predict_proba(x)[0, 1]
 
         if probability >= 0.75:
             level, message = "🔴 HIGH RISK", "Immediate review recommended."
