@@ -12,7 +12,15 @@ def get_image_base64(image_path):
     with open(image_path, "rb") as f:
         return base64.b64encode(f.read()).decode()
 
+@st.cache_resource
+def load_artifact():
+    if not MODEL_PATH.exists():
+        return None
 
+    return joblib.load(MODEL_PATH)
+
+
+artifact = load_artifact()
 
 
 st.set_page_config(
