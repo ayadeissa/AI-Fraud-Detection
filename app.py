@@ -571,17 +571,17 @@ if uploaded_file is not None:
 
             model = artifact["model"]
 
-        predictions = model.predict(X)
+            predictions = model.predict(X)
 
-        probabilities = model.predict_proba(X)[:, 1]
+            probabilities = model.predict_proba(X)[:, 1]
 
-        df["fraud_probability"] = probabilities
-        df["prediction"] = predictions
+            df["fraud_probability"] = probabilities
+            df["prediction"] = predictions
 
-        df["risk_level"] = pd.cut(
-            probabilities,
-            bins=[-0.01, 0.50, 0.75, 1.0],
-            labels=["LOW", "MEDIUM", "HIGH"]
+            df["risk_level"] = pd.cut(
+              probabilities,
+              bins=[-0.01, 0.50, 0.75, 1.0],
+              labels=["LOW", "MEDIUM", "HIGH"]
         )
 
     if errors:
