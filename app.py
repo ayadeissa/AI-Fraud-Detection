@@ -252,11 +252,11 @@ if st.session_state.get("dataset_ready", False):
     with st.form("customer_form"):
         col1, col2, col3 = st.columns(3)
 
-         loan_amount = st.number_input("Loan Amount")
-         credit_score = st.number_input(
-             "Credit Score",
-             min_value=550,
-             max_value=850
+        loan_amount = st.number_input("Loan Amount")
+        credit_score = st.number_input(
+            "Credit Score",
+            min_value=550,
+            max_value=850
     )
         
         with col1:
