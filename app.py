@@ -73,7 +73,7 @@ if hero_path.exists():
             font-size: 46px;
             font-weight: 800;
             color: #FFC107 !important;
-            text-align: center;
+            text-align: left;
             margin-bottom: -450px;
         }}
 
