@@ -525,12 +525,16 @@ uploaded_file = st.file_uploader(
 if uploaded_file is not None:
     df = pd.read_csv(uploaded_file)
 
-show_dataset = st.checkbox(
+    # ==========================================
+    # DATASET PREVIEW
+    # ==========================================
+
+    show_dataset = st.checkbox(
         "📋 Show Dataset Preview",
         value=False
     )
 
-if show_dataset:
+    if show_dataset:
         st.markdown("### 📊 Dataset Preview")
 
         st.dataframe(
@@ -544,9 +548,56 @@ if show_dataset:
             f"out of {len(df):,} rows "
             f"and {len(df.columns)} columns."
         )
-    
-    # Validation
+
+    # ==========================================
+    # VALIDATION
+    # ==========================================
+
     errors = validate_batch_data(df)
+
+    if errors:
+        st.error("❌ Data Validation Failed")
+
+        for error in errors:
+            st.write(f"• {error}")
+
+    else:
+        st.success("✅ Data Validation Passed")
+
+        if st.button(
+            "🔄 Apply Changes",
+            use_container_width=True
+        ):
+            st.session_state["dataset_ready"] = True
+            st.session_state["uploaded_df"] = df.copy()
+            st.rerun()
+
+        X = df[MODEL_COLS].copy()
+
+        for col in NUMERICAL_COLS:
+            X[col] = pd.to_numeric(
+                X[col],
+                errors="coerce"
+            )
+
+        if artifact is None:
+            st.error("❌ Model artifact not found.")
+            st.stop()
+
+        model = artifact["model"]
+
+        predictions = model.predict(X)
+
+        probabilities = model.predict_proba(X)[:, 1]
+
+        df["fraud_probability"] = probabilities
+        df["prediction"] = predictions
+
+        df["risk_level"] = pd.cut(
+            probabilities,
+            bins=[-0.01, 0.50, 0.75, 1.0],
+            labels=["LOW", "MEDIUM", "HIGH"]
+        )
 
     if errors:
         st.error("❌ Data Validation Failed")
