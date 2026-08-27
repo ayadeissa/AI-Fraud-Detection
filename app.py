@@ -530,7 +530,7 @@ show_dataset = st.checkbox(
         value=False
     )
 
-    if show_dataset:
+if show_dataset:
         st.markdown("### 📊 Dataset Preview")
 
         st.dataframe(
