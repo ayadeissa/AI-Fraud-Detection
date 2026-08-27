@@ -557,7 +557,7 @@ if uploaded_file is not None:
 
 
 
-        X = df[MODEL_COLS].copy()
+    X = df[MODEL_COLS].copy()
 
         for col in NUMERICAL_COLS:
             X[col] = pd.to_numeric(
