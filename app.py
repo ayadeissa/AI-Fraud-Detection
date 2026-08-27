@@ -50,45 +50,58 @@ hero_path = Path(__file__).parent / "assets"  / "bank misr.png"
 if hero_path.exists():
     hero_base64 = get_image_base64(hero_path)
 
-    st.markdown(
-        f"""
-        <style>
-        .hero-section {{
-            background-image:
-                url("data:image/png;base64,{hero_base64}");
+    # ==============================
+# HERO IMAGE
+# ==============================
 
-            background-size: contain;
-            background-position: left;
-            background-repeat: no-repeat;
-            min-height: 350px;
-            border-radius: 25px;
-            padding: 45px;
-            display: flex;
-            filter: none !important;
-            opacity: 1 !important;
-            align-items: flex-end;
-        }}
+st.markdown(
+    f"""
+    <style>
+    .hero-image-container {{
+        display: flex;
+        justify-content: center;
+        margin-bottom: 18px;
+    }}
 
-        .hero-title {{
-            font-size: 46px;
-            font-weight: 800;
-            color: #FFC107 !important;
-            text-align: left;
-            margin-top: 500px;
-        }}
+    .hero-image {{
+        width: 255px;
+        height: 255px;
+        object-fit: cover;
+        border-radius: 16px;
+        box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+    }}
 
-        
-        </style>
+    .bank-card {{
+        background: white;
+        border: 1px solid #e5e5e5;
+        border-radius: 14px;
+        padding: 20px;
+        text-align: center;
+        margin-bottom: 18px;
+        box-shadow: 0 3px 12px rgba(0,0,0,0.06);
+    }}
 
-        <div class="hero-section"><div>
-                <div class="hero-title">BANQUE MISR MODEL</div>
-         </div>  
-         </div>
-                 
-                
-        """,
-        unsafe_allow_html=True
-    )
+    .bank-title {{
+        color: #FFC107;
+        font-size: 34px;
+        font-weight: 800;
+        margin: 0;
+    }}
+    </style>
+
+    <div class="hero-image-container">
+        <img src="data:image/png;base64,{hero_base64}"
+             class="hero-image">
+    </div>
+
+    <div class="bank-card">
+        <div class="bank-title">
+            بنك مصر
+        </div>
+    </div>
+    """,
+    unsafe_allow_html=True
+)
     st.markdown( """
         <div style="
         background-color: #f9f9f9; 
