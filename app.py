@@ -252,6 +252,13 @@ if st.session_state.get("dataset_ready", False):
     with st.form("customer_form"):
         col1, col2, col3 = st.columns(3)
 
+         loan_amount = st.number_input("Loan Amount")
+         credit_score = st.number_input(
+             "Credit Score",
+             min_value=550,
+             max_value=850
+    )
+        
         with col1:
             loan_amount = st.number_input(
                 "Loan Amount",
@@ -391,7 +398,6 @@ if st.session_state.get("dataset_ready", False):
                 max_value=1.0,
                 value=0.50
             )
-
         submitted = st.form_submit_button(
             "🚨 Predict Customer Risk",
             use_container_width=True
