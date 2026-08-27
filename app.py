@@ -525,6 +525,26 @@ uploaded_file = st.file_uploader(
 if uploaded_file is not None:
     df = pd.read_csv(uploaded_file)
 
+show_dataset = st.checkbox(
+        "📋 Show Dataset Preview",
+        value=False
+    )
+
+    if show_dataset:
+        st.markdown("### 📊 Dataset Preview")
+
+        st.dataframe(
+            df.head(10),
+            use_container_width=True,
+            hide_index=True
+        )
+
+        st.caption(
+            f"Showing {min(10, len(df))} rows "
+            f"out of {len(df):,} rows "
+            f"and {len(df.columns)} columns."
+        )
+    
     # Validation
     errors = validate_batch_data(df)
 
