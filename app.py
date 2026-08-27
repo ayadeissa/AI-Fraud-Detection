@@ -95,7 +95,7 @@ st.markdown(
 
     <div class="bank-card">
         <div class="bank-title">
-            BANK MISR
+            BANK MISR MODEL
         </div>
     </div>
     """,
