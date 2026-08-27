@@ -403,7 +403,8 @@ if st.session_state.get("dataset_ready", False):
             use_container_width=True
         )
 
-
+if submitted:
+    st.success("Button is working!")
 # =========================================================
 # BATCH DATA UPLOAD
 # =========================================================
