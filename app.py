@@ -555,22 +555,7 @@ if uploaded_file is not None:
 
     errors = validate_batch_data(df)
 
-    if errors:
-        st.error("❌ Data Validation Failed")
 
-        for error in errors:
-            st.write(f"• {error}")
-
-    else:
-        st.success("✅ Data Validation Passed")
-
-        if st.button(
-            "🔄 Apply Changes",
-            use_container_width=True
-        ):
-            st.session_state["dataset_ready"] = True
-            st.session_state["uploaded_df"] = df.copy()
-            st.rerun()
 
         X = df[MODEL_COLS].copy()
 
