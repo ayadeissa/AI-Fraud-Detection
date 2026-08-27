@@ -58,7 +58,7 @@ st.markdown(
     <style>
     .hero-image-container {{
         display: flex;
-        justify-content: left;
+        justify-content: center;
         margin-bottom: 18px;
     }}
 
@@ -95,7 +95,7 @@ st.markdown(
 
     <div class="bank-card">
         <div class="bank-title">
-            بنك مصر
+            BANK MISR
         </div>
     </div>
     """,
