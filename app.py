@@ -402,7 +402,108 @@ with st.form("customer_form"):
 
 
 if submitted:
-    st.success("Button is working!")
+
+    # Create one customer record
+    customer_data = {
+        "loan_amount": loan_amount,
+        "credit_score": credit_score,
+        "annual_income": annual_income,
+        "dti_ratio": dti_ratio,
+        "employment_length_years": employment_length_years,
+        "num_existing_loans": num_existing_loans,
+        "account_age_months": account_age_months,
+        "declared_purpose": declared_purpose,
+        "primary_mcc_category": primary_mcc_category,
+        "secondary_mcc_category": secondary_mcc_category,
+        "mcc_mismatch_flag": mcc_mismatch_flag,
+        "days_to_first_tx": days_to_first_tx,
+        "pct_spent_48h": pct_spent_48h,
+        "pct_spent_7d": pct_spent_7d,
+        "cash_withdrawal_ratio": cash_withdrawal_ratio,
+        "high_risk_spend_ratio": high_risk_spend_ratio,
+        "international_tx_ratio": international_tx_ratio,
+        "nighttime_tx_ratio": nighttime_tx_ratio,
+        "num_unique_merchants": num_unique_merchants,
+        "num_total_transactions": num_total_transactions,
+        "avg_tx_amount": avg_tx_amount,
+        "max_single_tx_pct": max_single_tx_pct
+    }
+
+    # Convert to DataFrame
+    input_df = pd.DataFrame([customer_data])
+
+    # Make sure columns are in the same order as the model
+    input_df = input_df[MODEL_COLS]
+
+    try:
+
+        # Prediction
+        prediction = model.predict(input_df)[0]
+
+        probability = model.predict_proba(input_df)[0][1]
+
+        # Risk level
+        if probability >= 0.75:
+            risk_level = "HIGH"
+        elif probability >= 0.50:
+            risk_level = "MEDIUM"
+        else:
+            risk_level = "LOW"
+
+        # ------------------------------------------------
+        # Results
+        # ------------------------------------------------
+
+        st.markdown("---")
+        st.subheader("🎯 Customer Risk Assessment")
+
+        col1, col2, col3 = st.columns(3)
+
+        with col1:
+            st.metric(
+                "Fraud Probability",
+                f"{probability * 100:.2f}%"
+            )
+
+        with col2:
+            st.metric(
+                "Prediction",
+                "MISUSE" if prediction == 1 else "NORMAL"
+            )
+
+        with col3:
+            st.metric(
+                "Risk Level",
+                risk_level
+            )
+
+        # Risk message
+        if risk_level == "HIGH":
+
+            st.error(
+                "🔴 HIGH RISK — This customer shows a high "
+                "probability of loan misuse."
+            )
+
+        elif risk_level == "MEDIUM":
+
+            st.warning(
+                "🟠 MEDIUM RISK — This customer requires "
+                "additional review."
+            )
+
+        else:
+
+            st.success(
+                "🟢 LOW RISK — This customer shows a low "
+                "probability of loan misuse."
+            )
+
+    except Exception as e:
+
+        st.error(
+            f"❌ Prediction failed: {e}"
+        )
 # =========================================================
 # BATCH DATA UPLOAD
 # =========================================================
