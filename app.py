@@ -611,6 +611,7 @@ if uploaded_file is not None:
         if st.button(
             "🔄 Apply Changes",
             use_container_width=True
+            key="apply_changes_btn"
         ):
             st.session_state["dataset_ready"] = True
             st.session_state["uploaded_df"] = df.copy()
