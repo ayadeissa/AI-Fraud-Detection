@@ -615,6 +615,7 @@ if uploaded_file is not None:
         ):
             st.session_state["dataset_ready"] = True
             st.session_state["uploaded_df"] = df.copy()
+            st.session_state["apply_changes_clicked"] = True
             st.rerun()
 
         # Make a copy of model features
