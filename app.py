@@ -251,6 +251,14 @@ if st.session_state.get("dataset_ready", False):
 
     submitted = False
 
+artifact = load_artifact()
+
+if artifact is None:
+    st.error("❌ Model artifact not found.")
+    st.stop()
+
+model = artifact["model"]
+
 with st.form("customer_form"):
 
     col1, col2, col3 = st.columns(3)
