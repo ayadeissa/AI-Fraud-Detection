@@ -53,7 +53,6 @@ if hero_path.exists():
     # ==============================
 # HERO IMAGE
 # ==============================
-
 st.markdown(
     f"""
     <style>
@@ -102,7 +101,7 @@ st.markdown(
     """,
     unsafe_allow_html=True
 )
-    st.markdown( """
+st.markdown( """
         <div style="
         background-color: #f9f9f9; 
         padding: 15px; 
