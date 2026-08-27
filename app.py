@@ -559,13 +559,13 @@ if uploaded_file is not None:
 
     X = df[MODEL_COLS].copy()
 
-        for col in NUMERICAL_COLS:
+    for col in NUMERICAL_COLS:
             X[col] = pd.to_numeric(
                 X[col],
                 errors="coerce"
-            )
+        )
 
-        if artifact is None:
+    if artifact is None:
             st.error("❌ Model artifact not found.")
             st.stop()
 
