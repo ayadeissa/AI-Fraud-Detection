@@ -58,7 +58,7 @@ st.markdown(
     <style>
     .hero-image-container {{
         display: flex;
-        justify-content: center;
+        justify-content: left;
         margin-bottom: 18px;
     }}
 
