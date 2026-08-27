@@ -403,79 +403,7 @@ if st.session_state.get("dataset_ready", False):
             use_container_width=True
         )
 
-if submitted:
 
-    customer_data = pd.DataFrame([{
-        "loan_amount": loan_amount,
-        "credit_score": credit_score,
-        "annual_income": annual_income,
-        "dti_ratio": dti_ratio,
-        "employment_length_years": employment_length_years,
-        "num_existing_loans": num_existing_loans,
-        "account_age_months": account_age_months,
-        "days_to_first_tx": days_to_first_tx,
-        "pct_spent_48h": pct_spent_48h,
-        "pct_spent_7d": pct_spent_7d,
-        "cash_withdrawal_ratio": cash_withdrawal_ratio,
-        "high_risk_spend_ratio": high_risk_spend_ratio,
-        "international_tx_ratio": international_tx_ratio,
-        "nighttime_tx_ratio": nighttime_tx_ratio,
-        "num_unique_merchants": num_unique_merchants,
-        "num_total_transactions": num_total_transactions,
-        "avg_tx_amount": avg_tx_amount,
-        "max_single_tx_pct": max_single_tx_pct,
-        "declared_purpose": declared_purpose,
-        "primary_mcc_category": primary_mcc_category,
-        "secondary_mcc_category": secondary_mcc_category,
-        "mcc_mismatch_flag": mcc_mismatch_flag
-    }])
-
-    # Validate entered customer data
-    errors = validate_batch_data(customer_data)
-
-    if errors:
-        st.error("❌ Invalid Customer Data")
-
-        for error in errors:
-            st.write(f"• {error}")
-
-    else:
-        try:
-            model = artifact["model"]
-
-            X = customer_data[MODEL_COLS].copy()
-
-            prediction = model.predict(X)[0]
-            probability = model.predict_proba(X)[0, 1]
-
-            if probability >= 0.75:
-                risk = "HIGH"
-            elif probability >= 0.50:
-                risk = "MEDIUM"
-            else:
-                risk = "LOW"
-
-            st.success("✅ Prediction completed successfully!")
-
-            col1, col2, col3 = st.columns(3)
-
-            col1.metric(
-                "Fraud Probability",
-                f"{probability:.1%}"
-            )
-
-            col2.metric(
-                "Prediction",
-                "MISUSE" if prediction == 1 else "LEGITIMATE"
-            )
-
-            col3.metric(
-                "Risk Level",
-                risk
-            )
-
-        except Exception as e:
-            st.error(f"❌ Prediction Error: {e}")
 # =========================================================
 # BATCH DATA UPLOAD
 # =========================================================
