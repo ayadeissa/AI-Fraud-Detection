@@ -569,7 +569,7 @@ if uploaded_file is not None:
             st.error("❌ Model artifact not found.")
             st.stop()
 
-        model = artifact["model"]
+            model = artifact["model"]
 
         predictions = model.predict(X)
 
